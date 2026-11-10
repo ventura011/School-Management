@@ -4,24 +4,25 @@ import dotenv from "dotenv";
 
 import connectDB from "./config/db.js";
 
-import userRoutes from "./routes/userRoutes.js";
-
-import carsRoutes from "./routes/carsRoutes.js";
-
-import saleRouter from "./routes/saleRouter.js";
+import enrollmentRoutes from "./routes/enrollmentRoutes.js"
+import studentRoutes from "./routes/studentRoutes.js"
+import subjectRoutes from "./routes/subjectRoutes.js"
+import teacherRoutes from "./routes/teacherRoutes.js"
 
 dotenv.config();
 
 const app = express();
-const PORT = 8900;
+const PORT = 3000;
 
 app.use(express.json());
 
-app.use("/cars", carsRoutes);
+app.use("/enrollments", enrollmentRoutes);
 
-app.use("/users", userRoutes);
+app.use("/students", studentRoutes);
 
-app.use("/sales", saleRouter);
+app.use("/subjects", subjectRoutes);
+
+app.use("/teachers", teacherRoutes);
 
 const startServer = async () => {
   try {

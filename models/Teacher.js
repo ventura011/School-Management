@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 const TeacherSchema = new mongoose.Schema(
 
@@ -33,4 +33,4 @@ const TeacherSchema = new mongoose.Schema(
         timestamps: true,
     },
 );
-export default mongoose.model("Teacher", TeacherSchema)git pull origin main
+export default mongoose.model("Teacher", TeacherSchema)
