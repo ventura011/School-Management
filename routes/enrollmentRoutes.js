@@ -39,10 +39,10 @@ router.get(
     enrollmentController.countEnrollments
 )
 
-router.patch(
-    "/:id/grade",
-     enrollmentController.updateGrade
-    )
+// router.patch(
+//     "/:id/grade",
+//      enrollmentController.updateGrade
+//     )
 
     router.patch(
         "/:id/status", 
