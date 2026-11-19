@@ -21,21 +21,28 @@ const authMiddleware = async (req, res, next) => {
             return res.status(401).json({ error: "Formato do token inválido" })
         }
 
-        const decoded = jwt.verify( token, process.env.JWT_SECRET)
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
         const user = await User.findById(decoded.id)
 
+        console.log(user)
+
         if (!user) {
-            return res.status(401).json({ error: "Usuário não encontrado"})
+            return res.status(401).json({ error: "Usuário não encontrado" })
         }
 
         if (!user.ativo) {
-            return res.status(403).json({ error: "Usuário inativo"})
+            return res.status(403).json({ error: "Usuário inativo" })
         }
 
         req.user = user
 
+        next()
+
     } catch (error) {
         next(error)
+        return res.status(403).json({ error: "Token inválido ou mal formatado" })
     }
 }
+
+export default authMiddleware
