@@ -1,42 +1,44 @@
 import express from "express"
 import enrollmentController from "../controllers/enrollmentController.js"
+import authMiddleware from "../middlewares/authMiddleware.js"
+import adminMiddleware from "../middlewares/adminMiddleware.js"
 
 
 const router = express.Router()
 
 router.post(
     "/",
-    enrollmentController.createEnrollment
+    authMiddleware, enrollmentController.createEnrollment
 )
 
 router.get(
     "/",
-    enrollmentController.getAllEnrollments
+    authMiddleware, adminMiddleware, enrollmentController.getAllEnrollments
 )
 
 router.get(
     "/:id",
-    enrollmentController.getEnrollmentById
+    authMiddleware, enrollmentController.getEnrollmentById
 )
 
 router.get(
     "/student/:studentId",
-    enrollmentController.getEnrollmentByStudentId
+    authMiddleware, enrollmentController.getEnrollmentByStudentId
 )
 
 router.get(
     "/subject/:subjectId",
-    enrollmentController.getEnrollmentBySubjectId
+    authMiddleware, enrollmentController.getEnrollmentBySubjectId
 )
 
 router.get(
     "/status/:status",
-    enrollmentController.getEnrollmentByStatus
+    authMiddleware, adminMiddleware, enrollmentController.getEnrollmentByStatus
 )
 
 router.get(
     "//count",
-    enrollmentController.countEnrollments
+    authMiddleware, adminMiddleware, enrollmentController.countEnrollments
 )
 
 // router.patch(
@@ -46,12 +48,12 @@ router.get(
 
     router.patch(
         "/:id/status", 
-        enrollmentController.updateEnrollmentStatus
+        authMiddleware, adminMiddleware, enrollmentController.updateEnrollmentStatus
     )
 
     router.delete(
         "/:id",
-         enrollmentController.deleteEnrollment
+         authMiddleware, adminMiddleware, enrollmentController.deleteEnrollment
         )
 
 export default router;

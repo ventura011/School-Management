@@ -1,51 +1,63 @@
 import express from "express"
 import teacherController from "../controllers/teacherController.js"
+import authMiddleware from "../middlewares/authMiddleware.js"
+import adminMiddleware from "../middlewares/adminMiddleware.js"
 
 const router = express.Router()
 
 router.post(
     "/",
-    teacherController.createTeacher
+    authMiddleware
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    , adminMiddleware, teacherController.createTeacher
 )
 
 router.get(
     "/",
-    teacherController.getAllTeachers
+    authMiddleware, adminMiddleware, teacherController.getAllTeachers
 )
 
 router.get(
     "/:id",
-    teacherController.getTeachersById
+    authMiddleware, adminMiddleware, teacherController.getTeachersById
 )
 
 router.get(
     "/active/teachers/active",
-    teacherController.searchTeachersActives
+    authMiddleware, adminMiddleware, teacherController.searchTeachersActives
 )
 
 router.get(
     "/:speciality/teachers",
-    teacherController.searchTeachersSpeciality
+    authMiddleware, teacherController.searchTeachersSpeciality
 )
 
 router.get(
     "/count/teachers/c",
-    teacherController.countTeachers
+    authMiddleware, adminMiddleware, teacherController.countTeachers
 )
 
 router.put(
     "/:id",
-    teacherController.updateTeacher
+    authMiddleware, adminMiddleware, teacherController.updateTeacher
 )
 
 router.patch(
     "/:id",
-    teacherController.updateStatus
+    authMiddleware, adminMiddleware, teacherController.updateStatus
 )
 
 router.delete(
     "/:id",
-    teacherController.deleteTeacher
+    authMiddleware, adminMiddleware, teacherController.deleteTeacher
 )
 
 export default router;

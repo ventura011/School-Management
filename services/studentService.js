@@ -9,46 +9,60 @@ const createStudent = async (data) => {
         throw error
     }
 
-    const studentExists = await Student.findOne({ email })
+    const userExists = await User.findOne({ email })
 
-    if (studentExists) {
+    if (userExists) {
         const error = new Error("O email já foi utilizado")
         error.statusCode = 400
         throw error
     }
 
-    const student = await Student.create({
+    const user = await Student.create({
         nome,
         email,
         idade,
-        matricula
+        matricula,
+        role: "student",
+        ativo: true
     })
 
-    return {
-        _id: student._id,
-        nome: student.nome,
-        email: student.email,
-        idade: student.idade,
-        matricula: student.matricula,
-        createdAt: student.createdAt,
-        updatedAt: student.updatedAt
+    try {
+        const student = await Student.create({
+            userId: user._id,
+            idade,
+            matricula,
+            role: "student",
+            ativo: true
+        })
+
+        return Student.findById(student._id)
+            .populate("userId", "nome email idade matricula role ativo")
+    } catch (error) {
+        await user.findByIdAndDelete(user._id)
+        throw error
     }
+
+
 
     return student;
 }
 
 const getAllStudents = async () => {
     return Student.find()
+    .populate("userId", "nome email idade matricula role ativo")
 }
     
 const getStudentById = async (id) => {
-    const student = await Student.findById(id);
+    const student = await Student.findById(id)
+    .populate("userId", "nome email idade matricula role ativo")
+    
 
     if (!student) {
         const error = new Error("Estudante não encontrado")
         error.statusCode = 404
         throw error
     }
+    
 
     return student
 }
@@ -57,6 +71,7 @@ const searchStudentsActives = async (ativo) => {
     const student = await Student.find({
         ativo: true,
     })
+    .populate("userId", "nome email idade matricula role ativo")
 
     if (!student) {
         const error = new Error("Estudante não encontrado")
@@ -71,6 +86,7 @@ const searchStudentsNames = async (nome) => {
     const student = await Student.find({
         nome
     })
+    .populate("userId", "nome email idade matricula role ativo")
 
     if (!student) {
         const error = new Error("Estudante não encontrado")
@@ -83,6 +99,7 @@ const searchStudentsNames = async (nome) => {
 
 const countStudents = async () => {
     return Student.countDocuments()
+    .populate("userId", "nome email idade matricula role ativo")
 }
 
 const updateStudent = async (id, data) => {
@@ -90,7 +107,8 @@ const updateStudent = async (id, data) => {
     const student = await Student.findByIdAndUpdate(id, data, {
         new: true,
         runValidators: true,
-    });
+    })
+    .populate("userId", "nome email idade matricula role ativo")
 
     if (!student) {
         const error = new Error("Estudante não encontrado")
@@ -103,6 +121,7 @@ const updateStudent = async (id, data) => {
 
 const updateStatus = async (id, data) => {
     const student = await Student.findByIdAndUpdate(id, data)
+    .populate("userId", "nome email idade matricula role ativo")
 
     if (!student) {
         const error = new Error("Estudante não encontrado")
@@ -115,6 +134,7 @@ const updateStatus = async (id, data) => {
 
 const deleteStudent = async (id) => {
     const student = await Student.findByIdAndDelete(id)
+    .populate("userId", "nome email idade matricula role ativo")
 
     if (!student) {
         const error = new Error("Estudante não encontrado")
