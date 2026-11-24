@@ -41,19 +41,19 @@ router.get(
     authMiddleware, adminMiddleware, enrollmentController.countEnrollments
 )
 
-// router.patch(
-//     "/:id/grade",
-//      enrollmentController.updateGrade
-//     )
+router.patch(
+    "/:id/grade",
+    authMiddleware, adminMiddleware, enrollmentController.updateEnrollmentByGrade
+)
 
-    router.patch(
-        "/:id/status", 
-        authMiddleware, adminMiddleware, enrollmentController.updateEnrollmentStatus
-    )
+router.patch(
+    "/:id/status",
+    authMiddleware, adminMiddleware, enrollmentController.updateEnrollmentStatus
+)
 
-    router.delete(
-        "/:id",
-         authMiddleware, adminMiddleware, enrollmentController.deleteEnrollment
-        )
+router.delete(
+    "/:id/delete",
+    authMiddleware, adminMiddleware, enrollmentController.deleteEnrollment
+)
 
 export default router;
