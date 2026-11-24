@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv"
+import cors from "cors"
 
 import connectDB from "./config/db.js";
 
@@ -20,7 +21,18 @@ dotenv.config()
 const app = express();
 const PORT = process.env.PORT || 6767
 
+app.use(cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:5173"
+}))
+
 app.use(express.json());
+
+app.get("/health", (req, res) => {
+    res.status(200).json({
+        status: "ok",
+        message: "Servidor rodando"
+    })
+})
 
 app.use("/user", userRoutes)
 
@@ -33,6 +45,14 @@ app.use("/students", studentRoutes)
 app.use("/subjects", subjectRoutes)
 
 app.use("/teachers", teacherRoutes)
+
+app.use((error, req, res, next) => {
+    console.log(error.message)
+
+    res.status(error.statusCode || 500).json({
+        error: error.message
+    })
+})
 
 const startServer = async () => {
     try {

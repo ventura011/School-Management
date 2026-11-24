@@ -7,17 +7,8 @@ const router = express.Router()
 
 router.post(
     "/",
-    authMiddleware
     
-    
-    
-    
-    
-    
-    
-    
-    
-    , adminMiddleware, teacherController.createTeacher
+    authMiddleware, adminMiddleware, teacherController.createTeacher
 )
 
 router.get(
